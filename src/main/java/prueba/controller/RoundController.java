@@ -11,6 +11,7 @@ import prueba.models.models.SingleLong;
 import prueba.service.RoundService;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/round")
@@ -24,10 +25,10 @@ public class RoundController {
     @PostMapping("/save")
     public ResponseEntity<?> save(@Valid @RequestBody Round round){
 
-        Round roundSave = service.Save(round);
+        Optional<Round>  roundSave = Optional.ofNullable(service.Save(round));
 
-        if (roundSave.equals(null)){
-            return ResponseEntity.badRequest().build();
+        if (roundSave.isEmpty()){
+            return ResponseEntity.badRequest().body("No se crear la Ronda");
         }
 
         return ResponseEntity.ok(roundSave);
@@ -38,10 +39,10 @@ public class RoundController {
     @PutMapping("/save")
     public ResponseEntity<?> saveEdit(@Valid @RequestBody Round round){
 
-        Round roundSave = service.Save(round);
+        Optional<Round>  roundSave = Optional.ofNullable(service.Save(round));
 
-        if (roundSave.equals(null)){
-            return ResponseEntity.badRequest().build();
+        if (roundSave.isEmpty()){
+            return ResponseEntity.badRequest().body("No se crear la Ronda");
         }
 
         return ResponseEntity.ok(roundSave);
@@ -61,8 +62,12 @@ public class RoundController {
     @PostMapping("/entry")
     public ResponseEntity<?> entry(@RequestBody SingleDate date){
 
-       Round round = service.entry(date.getDate(),date.getId());
 
+        Optional<Round> round = Optional.ofNullable(service.entry(date.getDate(), date.getId()));
+
+        if (round.isEmpty()){
+            return ResponseEntity.badRequest().body("No se se pudo crear la entrada");
+        }
         return ResponseEntity.ok("Fecha añadida");
     }
 
@@ -71,7 +76,11 @@ public class RoundController {
     @PostMapping("/exit")
     public ResponseEntity<?> exit(@RequestBody SingleDate date){
 
-        Round round = service.exit(date.getDate(),date.getId());
+        Optional<Round> round = Optional.ofNullable(service.exit(date.getDate(), date.getId()));
+
+        if (round.isEmpty()){
+            return ResponseEntity.badRequest().body("No se se pudo crear la salida");
+        }
 
         return ResponseEntity.ok("Fecha añadida");
     }

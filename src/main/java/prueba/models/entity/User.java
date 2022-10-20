@@ -19,9 +19,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@AllArgsConstructor
 @Table(name = "user_db")
-@NoArgsConstructor
 public class User  {
 
     @Id
@@ -56,6 +54,22 @@ public class User  {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL )
     private List<Round> rounds;
 
+    public User( String passw, String name_one, String name_others, String last_name_one, String last_name_two, String country, String identification, String numId) {
+        this.passw = passw;
+        this.name_one = name_one;
+        this.name_others = name_others;
+        this.last_name_one = last_name_one;
+        this.last_name_two = last_name_two;
+        this.country = country;
+        this.identification = identification;
+        this.numId = numId;
+        this.status = true;
+        this.create_at = new Date();
+    }
+
+    public User() {
+
+    }
 
 
 }

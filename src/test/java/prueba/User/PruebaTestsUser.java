@@ -7,47 +7,32 @@ import static org.mockito.Mockito.*;
 
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.jdbc.core.JdbcTemplate;
 import prueba.models.entity.User;
 import prueba.repository.UserRepository;
 import prueba.service.UserService;
 import prueba.service.impl.UserServiceImpl;
 
+import javax.sql.DataSource;
 import java.util.Optional;
 
-@SpringBootTest
+
+@DataJpaTest
 public class PruebaTestsUser {
 
-    @MockBean
+    @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    UserService service;
 
-    Optional<User> user = Optional.of(new User());
-
-
-    @BeforeEach
-    void setUp() {
-
-
-    }
 
     @Test
-    void contextLoads() {
-        when(userRepository.findByNumId("1116270821")).thenReturn(user);
-        Optional<User> user2 = service.findByNumId("1116270821");
-        String id = user2.get().getNumId();
-        Assertions.assertEquals(null,id);
-    }
-
-    @Test
-    void ExistUserById() {
-      //  when(userRepository.findByNumId("1116270821")).thenReturn(user);
-
-
-
-
+    void ExistUserByIdAndCreateUser() {
+        Optional<User> user = userRepository.findByNumId("1116270821");
+        Assertions.assertTrue(user.isPresent());
+        Assertions.assertEquals("brian",user.get().getName_one());
     }
 }

@@ -11,6 +11,8 @@ import prueba.models.models.SingleLong;
 import prueba.service.AreaService;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/area")
@@ -25,13 +27,13 @@ public class AreaController {
     @PostMapping("/save")
     public ResponseEntity<?> save( @Valid @RequestBody Area area){
 
-        Area areaSave = service.save(area);
+        Optional<Area>areaSave = Optional.ofNullable(service.save(area));
 
-        if (areaSave.equals(null)){
-            return ResponseEntity.badRequest().build();
+        if (areaSave.isEmpty()){
+            return ResponseEntity.badRequest().body("No se pudo crear el area");
         }
 
-        return ResponseEntity.ok(areaSave);
+        return ResponseEntity.ok(areaSave.get());
 
     }
 
@@ -50,6 +52,11 @@ public class AreaController {
     @ApiResponse(code = 200,message = "Lista de Areas")
     public ResponseEntity<?> all(){
 
+        List<Area> areaList = service.findAll();
+
+        if (areaList.isEmpty()){
+            return ResponseEntity.badRequest().body("No se pudo crear la lista de area");
+        }
         return ResponseEntity.ok(service.findAll());
     }
 
@@ -58,6 +65,10 @@ public class AreaController {
     @GetMapping("find")
     public ResponseEntity<?> all(@RequestBody SingleData data){
 
+        Optional<Area> area = service.findBtName(data.getData());
+        if (area.isEmpty()){
+            return ResponseEntity.badRequest().body("No se encontro el area de nombre:" + data.getData());
+        }
         return ResponseEntity.ok(service.findBtName(data.getData()));
     }
 }
