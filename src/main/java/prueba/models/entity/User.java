@@ -54,7 +54,8 @@ public class User  {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL )
     private List<Round> rounds;
 
-    public User( String passw, String name_one, String name_others, String last_name_one, String last_name_two, String country, String identification, String numId) {
+    public User(  String passw, String name_one, String name_others, String last_name_one, String last_name_two, String country, String identification, String numId,String email) {
+        //this.user_id = user_id;
         this.passw = passw;
         this.name_one = name_one;
         this.name_others = name_others;
@@ -63,6 +64,7 @@ public class User  {
         this.country = country;
         this.identification = identification;
         this.numId = numId;
+        this.email = email;
         this.status = true;
         this.create_at = new Date();
     }
